@@ -20,13 +20,14 @@ public class DemoApplication {
 	}
 
 	@Bean
-	public Function<Message<Person>, Message<Employee>> hire() {
+	public Function<Message<String>, Message<String>> hello() {
 		return message -> {
 			System.out.println(new PrettyPrintingMap<String, Object>((Map<String, Object>)message.getHeaders()));
 			
-			Person person = message.getPayload();
-			Employee employee = new Employee(person);
-			return CloudEventMessageBuilder.withData(employee).setId("123456")
+			String data = message.getPayload();
+			return CloudEventMessageBuilder
+				.withData(String.format("Headers: %s\nPayload: %s", new PrettyPrintingMap<String, Object>((Map<String, Object>)message.getHeaders()), data))
+				.setId("123456")
 				.setSource(URI.create("https://spring.cloudevenets.sample")).build();
 		};
 	}
