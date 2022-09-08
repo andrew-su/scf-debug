@@ -2,6 +2,6 @@
 set -e
 
 pushd old
-./mvnw install
+./mvnw clean install
 java -jar ./target/*.jar
 popd
